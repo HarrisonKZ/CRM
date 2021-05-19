@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ClueController {
@@ -85,5 +87,17 @@ public class ClueController {
     @ResponseBody
     public List<Activity> getAllActivityByName(String name){
         return clueService.getAllActivityByName(name);
+    }
+
+
+    @RequestMapping("workbench/clue/searchClue.do")
+    @ResponseBody
+    public Map<String, Object> searchClue(Integer pageNo, Integer pageSize, Clue clue){
+        List<Clue> clues = clueService.getClueList(pageNo,pageSize,clue);
+        int totalSize = clueService.getClueTotalSize(clue);
+        Map<String,Object> result = new HashMap<>();
+        result.put("clueList",clues);
+        result.put("totalSize",totalSize);
+        return result;
     }
 }

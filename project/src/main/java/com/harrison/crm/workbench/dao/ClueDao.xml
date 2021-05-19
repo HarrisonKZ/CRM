@@ -31,6 +31,60 @@
     <delete id="deleteClueById">
         delete from tbl_clue where id = #{clueId}
     </delete>
+
+    <select id="getClueList" resultType="com.harrison.crm.workbench.domain.Clue">
+        select c.id,c.fullname,c.appellation,c.company,c.phone,c.mphone,c.source,u.name as owner,c.state from tbl_clue c join tbl_user u on c.owner = u.id
+        <where>
+            <if test="fullname != null and fullname != ''">
+                c.fullname like '%' #{fullname} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.company like '%' #{company} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.phone = #{phone}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.source = #{source}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.owner like '%' #{owner} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.mphone = #{mphone}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.state = #{clueState}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTotalSize" resultType="_int">
+        select count(c.id) from tbl_clue c join tbl_user u on c.owner = u.id
+        <where>
+            <if test="fullname != null and fullname != ''">
+                c.fullname like '%' #{fullname} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.company like '%' #{company} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.phone = #{phone}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.source = #{source}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.owner like '%' #{owner} '%'
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.mphone = #{mphone}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                c.state = #{clueState}
+            </if>
+        </where>
+    </select>
   	
 </mapper>
 

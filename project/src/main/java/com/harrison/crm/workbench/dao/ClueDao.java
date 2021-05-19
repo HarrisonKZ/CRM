@@ -21,4 +21,8 @@ public interface ClueDao {
     List<ClueRemark> getClueRemark(String clueId);
 
     int deleteClueById(String clueId);
+
+    List<Clue> getClueList(Clue clue);
+
+    int getTotalSize(Clue clue);
 }

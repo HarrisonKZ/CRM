@@ -23,4 +23,8 @@ public interface ClueService {
     void convert(String createBy, String clueId, String flag, Tran t);
 
     List<Activity> getAllActivityByName(String name);
+
+    List<Clue> getClueList(Integer pageNo, Integer pageSize, Clue clue);
+
+    int getClueTotalSize(Clue clue);
 }

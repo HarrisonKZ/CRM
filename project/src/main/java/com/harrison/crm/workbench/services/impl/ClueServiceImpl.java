@@ -1,5 +1,6 @@
 package com.harrison.crm.workbench.services.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.harrison.crm.setting.dao.UserDao;
 import com.harrison.crm.setting.domain.User;
 import com.harrison.crm.utils.DateTimeUtil;
@@ -232,5 +233,16 @@ public class ClueServiceImpl implements ClueService {
             throw new ConvertException("删除clue关联关系失败！");
         }
 
+    }
+
+    @Override
+    public List<Clue> getClueList(Integer pageNo, Integer pageSize, Clue clue) {
+        PageHelper.startPage(pageNo,pageSize);
+        return clueDao.getClueList(clue);
+    }
+
+    @Override
+    public int getClueTotalSize(Clue clue) {
+        return clueDao.getTotalSize(clue);
     }
 }

@@ -128,6 +128,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" +r
 			dataType:"json",
 			type:"get",
 			success:function (data) {
+				$("#info").html(data.fullname + data.appellation + "<small>" + data.company + "</small>");
 				$("#info-name").html(data.fullname + data.appellation);
 				$("#info-owner").html(data.owner);
 				$("#info-id").html(data.id);
@@ -424,7 +425,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" +r
 	<!-- 大标题 -->
 	<div style="position: relative; left: 40px; top: -30px;">
 		<div class="page-header">
-			<h3>李四先生 <small>动力节点</small></h3>
+			<h3 id="info"></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
 			<button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp?id=${param.id}';"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
