@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.harrison.crm.workbench.dao.ActivityDao">
+
+
+    <insert id="saveActivity">
+        insert into tbl_activity values (#{id},#{owner},#{name},#{startDate},
+            #{endDate},#{cost},#{description},#{createTime},#{createBy},#{editTime},#{editBy})
+    </insert>
+
+    <select id="getTotalSize" resultType="int">
+        select count(t.id) from tbl_activity t join tbl_user u on t.owner = u.id
+        <where>
+            <if test="owner != null and owner != ''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="name != null and name != ''">
+                and t.name like '%' #{name} '%'
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and startDate &gt; #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and endDate &lt; #{endDate}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getPageList" resultType="com.harrison.crm.workbench.domain.Activity">
+        select t.id,t.name,u.name as owner,startDate,endDate from tbl_activity t join tbl_user u on t.owner = u.id
+        <where>
+            <if test="owner != null and owner != ''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="name != null and name != ''">
+                and t.name like '%' #{name} '%'
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and startDate &gt; #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and endDate &lt; #{endDate}
+            </if>
+        </where>
+        order by t.createTime  desc
+    </select>
+
+    <delete id="deleteActivity">
+        delete from tbl_activity where id in
+        <foreach collection="array" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getActivityRemarkNum" resultType="int">
+        select count(id) from tbl_activity_remark where activityId in
+        <foreach collection="array" separator="," open="(" close=")" item="aid">
+            #{aid}
+        </foreach>
+    </select>
+    <delete id="deleteActivityRemark">
+        delete from tbl_activity_remark where activityId in
+        <foreach collection="array" separator="," open="(" close=")" item="aid">
+            #{aid}
+        </foreach>
+    </delete>
+
+    <select id="getActivityById" resultType="com.harrison.crm.workbench.domain.Activity">
+        select * from tbl_activity where id = #{id}
+    </select>
+
+    <select id="getActivityByIdDetail" resultType="com.harrison.crm.workbench.domain.Activity">
+        select u.name as owner,a.id,a.name,a.startDate,a.endDate,a.cost,a.description,a.createTime,a.createBy,a.editTime,a.editBy
+            from tbl_activity a join tbl_user u on a.owner = u.id where a.id = #{id}
+    </select>
+
+    <update id="updateActivity">
+        update tbl_activity set owner=#{owner},name=#{name},startDate=#{startDate},endDate=#{endDate},cost=#{cost},description=#{description}
+        where id = #{id}
+    </update>
+
+    <insert id="saveRemark">
+        insert into tbl_activity_remark (id,noteContent,createTime,createBy,editFlag,activityId)
+            values (#{id},#{noteContent},#{createTime},#{createBy},#{editFlag},#{activityId})
+    </insert>
+
+    <select id="getRemark" resultType="com.harrison.crm.workbench.domain.ActivityRemark">
+        select r.id,r.noteContent,r.createTime,u.name as createBy,r.editTime,r.editBy,r.editFlag,r.activityId
+            from tbl_activity_remark r join tbl_user u on r.createBy = u.id where activityId = #{activityId}
+    </select>
+
+    <delete id="deleteRemark">
+        delete from tbl_activity_remark where id = #{id}
+    </delete>
+
+    <select id="getRemarkById" resultType="com.harrison.crm.workbench.domain.ActivityRemark">
+        select * from tbl_activity_remark where id = #{id}
+    </select>
+
+    <update id="updateRemark">
+        update tbl_activity_remark set noteContent = #{noteContent},editBy = #{editBy},editTime = #{editTime},editFlag = #{editFlag} where id = #{id}
+    </update>
+
+
+    <select id="getRemarkEditByName" resultType="com.harrison.crm.workbench.domain.ActivityRemark">
+        select u.name as editBy from tbl_activity_remark r join tbl_user u on r.editBy = u.id where r.editBy = #{editBy}
+    </select>
+
+    <select id="getAllActivityByName" resultType="com.harrison.crm.workbench.domain.Activity">
+        select a.id,a.name,a.startDate,a.endDate,u.name as owner from tbl_activity a join tbl_user u on a.owner = u.id where a.name like '%' #{name} '%'
+    </select>
+</mapper>

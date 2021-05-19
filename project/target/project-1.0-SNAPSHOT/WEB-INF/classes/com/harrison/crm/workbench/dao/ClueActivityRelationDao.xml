@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.harrison.crm.workbench.dao.ClueActivityRelationDao">
+	
+	<insert id="relateClueAct">
+        insert into tbl_clue_activity_relation values (#{id},#{clueId},#{activityId})
+    </insert>
+
+    <select id="getActivity" resultType="com.harrison.crm.workbench.domain.Activity">
+        select a.id,a.name,u.name as owner,a.startDate,a.endDate from tbl_activity a join tbl_user u on a.owner = u.id where a.id in (select activityId from tbl_clue_activity_relation where clueId = #{id})
+    </select>
+
+    <delete id="cancelRelate">
+        delete from tbl_clue_activity_relation where activityId = #{arg0} and clueId = #{arg1}
+    </delete>
+
+    <select id="getClueActivityRelation" resultType="com.harrison.crm.workbench.domain.ClueActivityRelation">
+        select * from tbl_clue_activity_relation where clueId = #{clueId}
+    </select>
+
+    <delete id="deleteCARByClueId">
+        delete from tbl_clue_activity_relation where clueId = #{clueId}
+    </delete>
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
